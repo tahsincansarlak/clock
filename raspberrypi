@@ -1,0 +1,65 @@
+# Tahsin Can Sarlak and William Wittich
+# 9/15/2019
+# Tufts Advanced Robotics Course
+
+# This code is meant for Raspberry Pi W Zero with Servo Hat. It creates a clock that displays 
+# minutes, seconds and a circle of emojis. The arm of emoji circle rotates in every 30 seconds
+# randomly.
+
+# Imports the necessary libraries to use
+from adafruit_servokit import ServoKit
+import time
+import random
+
+# Sets the servo driver
+kit = ServoKit(channels=8)
+
+# Starts the seconds and minutes variables
+seconds = 0
+minutes = 
+
+# Sets the position of minutes and seconds to 0 degree
+kit.servo[3].angle = 0
+kit.servo[1].angle =0
+
+# Makes sure the clock runs
+while True:
+
+        # Runs the seconds from 0 to 60
+        for i in range(60):
+
+                # Gets in the if statement as long as seconds stays less than 60
+                if seconds < 60:
+
+                        # Moves the seconds angle by 3 degrees.
+                        kit.servo[3].angle= 3*i
+                        time.sleep(1)
+
+                        # Adds one seconds in every second
+                        seconds = seconds + 1
+
+                        # If the seconds is 30 or 1 the emoji tongue moves randomly
+                        if seconds == 30 or seconds == 1:
+
+                                # MOves the motor
+                                kit.continuous_servo[2].throttle = 1
+                                random_number = random.random()
+
+                                # Moves the motor for a random number between 0 and 1 seconds
+                                time.sleep(random_number)
+
+                                # Stops the motor
+                                kit.continuous_servo[2].throttle = 0
+                else:
+                        # When seconds become 60, it sets the seconds to 0 and adds one to minutes.
+                        seconds = 0
+                        minutes = minutes + 1
+
+                        # Moves the minute arm 3 degrees.
+                        kit.servo[1].angle = minutes * 3
+                        time.sleep(1)
+
+                        # Moves the minutes arm to 0 when minutes get 60 
+                        if minutes > 59:
+                                minutes = 0
+
